@@ -14,16 +14,18 @@ namespace EthereumWallet
             DotNetEnv.Env.Load("./.env");
             // var wallet = new Wallet(NBitcoin.Wordlist.English, NBitcoin.WordCount.TwentyFour);
             var wallet = new Wallet(System.Environment.GetEnvironmentVariable("WALLET_SECRET"), "");
-            var account = wallet.GetAccount(0);
-            var receiverAccount = wallet.GetAccount(1);
+            // var account = wallet.GetAccount(0);
+            // External account
+            var account = new Account(System.Environment.GetEnvironmentVariable("PRIVATE_KEY"));
+            var receiverAccount = wallet.GetAccount(0);
             // var memo = string.Join(" ", wallet.Words);
-            // Console.WriteLine(receiverAccount.Address);
-            // await CheckBalance(receiverAccount.Address);
             await Transfer(account, receiverAccount.Address, 1);
-            Console.WriteLine($"MainAddress : {account.Address}");
-            await CheckBalance(account.Address);
             Console.WriteLine($"ReceiverAddress : {receiverAccount.Address}");
             await CheckBalance(receiverAccount.Address);
+            Console.WriteLine($"MainAddress : {account.Address}");
+            await CheckBalance(account.Address);
+            // Console.WriteLine($"ReceiverAddress : {receiverAccount.Address}");
+            // await CheckBalance(receiverAccount.Address);
         }
 
         //check Balance
